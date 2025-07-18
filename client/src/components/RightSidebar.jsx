@@ -3,7 +3,7 @@ import assets, { imagesDummyData } from '../assets/assets.js'
 import { ChatContext } from '../../context/ChatContext.jsx'
 import { AuthContext } from '../../context/AuthContext.jsx'
 
-const RightSidebar = ({selectedUser}) => {
+const RightSidebar = () => {
 
   const {selectedUser, messages} = useContext(ChatContext)
   const {logout, onlineUsers} = useContext(AuthContext)

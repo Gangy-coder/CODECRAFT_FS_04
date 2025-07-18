@@ -7,6 +7,7 @@ import { ChatContext } from '../../context/ChatContext.jsx'
 const Sidebar = () => {
 
     const {getUsers, users, selectedUser, setSelectedUser, unseenMessages, setUnseenMessages} = useContext(ChatContext)
+    console.log("ChatContext:", { getUsers, users, selectedUser, unseenMessages });
 
     const {logout, onlineUsers} = useContext(AuthContext)
 
@@ -44,13 +45,13 @@ const Sidebar = () => {
 
             <div className='flex flex-col'>
                 {filteredUsers.map((user, index) => (
-                    <div onClick={()=> {setSelectedUser(user); setUnseenMessages(prev=>({...prev, [user._id]:0}))}} key={index} className={`relative flex items-center gap-2 p-2 pl-4 rounded cursor-pointer max-sm:text-sm ${selecteduser?.id === user.id && 'bg-[#282142]/50'}`}>
+                    <div onClick={()=> {setSelectedUser(user); setUnseenMessages(prev=>({...prev, [user._id]:0}))}} key={index} className={`relative flex items-center gap-2 p-2 pl-4 rounded cursor-pointer max-sm:text-sm ${selectedUser?.id === user._id && 'bg-[#282142]/50'}`}>
                         <img src={user ?.profilePic || assets.avatar_icon} alt=""
                         className='w-[35px] aspect-[1/1] rounded-full' />
                         <div className='flex flex-col leading-5'>
                             <p>{user.fullName}</p>
                             {
-                                onlineUsers.includes(user._id) ?
+                                onlineUsers && onlineUsers.includes(user._id) ?
                                 <span className='text-green-400 text-xs'>Online</span>
                                 : <span className='text-neutral-400 text-xs'>Offline</span>
                             }

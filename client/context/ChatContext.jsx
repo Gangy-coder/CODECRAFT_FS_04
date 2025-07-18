@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import Sidebar from "../src/components/Sidebar";
+import axios from "axios"
+import toast from "react-hot-toast";
 
 export const ChatContext = createContext()
 
@@ -30,7 +32,7 @@ export const ChatProvider = ({ children })=>{
     const getMessages = async (userId) =>{
         try {
             const { data } = await axios.get(`/api/messages/${userId}`)
-            if(data.succes){
+            if(data.success){
                 setMessages(data.messages)
             }
         } catch (error) {
@@ -40,9 +42,13 @@ export const ChatProvider = ({ children })=>{
 
     // function to send message to selected user 
     const sendMessage = async (messageData) => {
+         if (!selectedUser) {
+        toast.error("No user selected.");
+        return;
+        }
         try {
             const {data} = await axios.post(`/api/messages/send/${selectedUser._id}`, messageData)
-            if(data.succes){
+            if(data.success){
                 setMessages((prevMessages) => [...prevMessages, data.newMessage])
             }else{
                 toast.error(data.message)
@@ -75,7 +81,9 @@ export const ChatProvider = ({ children })=>{
     }
 
     useEffect(()=>{
-        subscribeToMessages()
+    if (socket && selectedUser) {
+        subscribeToMessages();
+    }
         return ()=> unsubscribeFromMessages()
     }, [socket, selectedUser])
 
