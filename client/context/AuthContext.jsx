@@ -19,7 +19,10 @@ export const AuthProvider = ({children}) => {
     const checkAuth = async () => {
         try {
             if (!token) {
-            throw new Error("No token available");
+                if (window.location.pathname !== "/login") {
+                    toast.error("No token available");
+                }
+                return;
         }
            const { data } = await axios.get("/api/auth/check");
            if(data.success){
