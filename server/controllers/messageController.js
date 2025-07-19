@@ -31,7 +31,7 @@ export const getMessages = async (req, res) => {
         const { id: selectedUserId } = req.params;
         const myId = req.user._id;
 
-        const messages = await Messagefind({
+        const messages = await Message.find({
             $or: [
                 {senderId: myId, receiverId: selectedUserId},
                 {senderId: selectedUserId, receiverId: myId},
